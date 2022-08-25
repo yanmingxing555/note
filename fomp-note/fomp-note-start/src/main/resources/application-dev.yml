@@ -1,0 +1,67 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://192.168.2.11:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    metadata-map:
+      vendor: yss
+spring:
+  datasource:
+    driver-class-name: dm.jdbc.driver.DmDriver
+    username: TAQS_FC_DM
+    password: TAQS-.2021
+    url: jdbc:dm://192.168.1.188:5237
+  jpa:
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+    open-in-view: false
+    database-platform: org.hibernate.dialect.DmDialect
+  application:
+    name: fomp-note
+fomp:
+  sso:
+    business:
+      user-source: fomp
+server:
+  port: 13001
+j2cache:
+  open-spring-cache: true
+  redisClient: lettuce
+  broadcast: redis
+  serialization: fst
+  L1:
+    provider_class: com.yss.fomp.osgi.adapter.cache.CustomCacheProvider
+  L2:
+    provider_class: com.yss.fomp.osgi.adapter.cache.FompLettuceCacheProvider
+redis:
+  hosts: 192.168.7.80:9736
+  mode: single
+  cluster_name: null
+  password: ysstech123!@#
+  maxTotal: 500
+  maxIdle: 100
+  minIdle: 100
+  maxWaitMillis: 3000
+  channel: j2cache
+com:
+  yss:
+    fomp:
+      osgi:
+        adapter:
+          cache:
+            CustomCacheProvider:
+              configXml: ehcache3.xml
+            FompLettuceCacheProvider:
+              hosts: 192.168.7.80:9736
+              storage: generic
+              mode: single
+              cluster_name: null
+              password: ysstech123!@#
+              maxTotal: 500
+              maxIdle: 100
+              minIdle: 100
+              maxWaitMillis: 3000

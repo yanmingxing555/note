@@ -1,0 +1,108 @@
+#/**
+# * Spring Cloud Gateway 是 Spring 官方基于 Spring 5.0，Spring Boot 2.0 和 Project Reactor 等技术开发的网关，
+# * 旨在为微服务架构提供一种简单而有效的统一的 API 路由管理方式，统一访问接口。
+# *
+# * Spring Cloud Gateway是Spring Cloud官方推出的第二代网关框架，取代Zuul 网关。
+# * 网关作为流量的，在微服务系统中有着非常作用。据说性能是第一代网关 zuul的1.5倍。(基于Netty,WebFlux)
+# * 注意点:由于不是Servlet容器，所以他不能打成war包, 只支持SpringBoot2.X不 支持1.x
+# * 网关作用: 网关常见的功能有路由转发、权限校验、限流控制等作用。
+# */
+#/**
+# * Gateway核心概念
+# * 1.路由（Route）： 路由是网关的基本组成部分，路由信息由ID、目标URL、一组断言和一组过滤器组成，如果断言为真，则说明请求的URL和配置匹配。
+# * 2.断言（Predicate）： Java8中的断言函数，Spring Cloud Gateway中的断言函数输入类型是Spring5.0框架中的ServerWebExchange。
+# *                  Spring Cloud Gateway中的断言函数允许开发者自定义匹配来自于Http Request中的任何信息，比如请求头和参数等
+# * 3.过滤器（Flute）： 一个标准的SpringWebFilter，Spring Cloud Gateway中的Filter分为两种类型，
+# *                  分别是Gateway Filter和GlobalFilter，过滤器将会对请求和响应进行处理。
+# */
+###服务端口号
+server:
+  port: 9082
+###服务名称(服务注册到eureka名称)
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: eureka-client             #路由的ID，没有固定规则但要求唯一，建议配合服务名
+          #uri: http://127.0.0.1:9081    #匹配后提供服务的路由地址
+          uri: lb://eureka-client       #以 lb: //开头（lb代表从注册中心获取服务），后面接的就是你需要转发到的服务名称
+          predicates:                   #断言，路径相匹配的进行路由
+            #- Path=/GatewayForward/**
+            - Path=/eureka-client/**
+          filters:
+            #通过RewritePath配置重写转发的url，将/product-service/(?.*)，重写为{segment}，然后转发到订单微服务。
+            #比如在网页上请求http://localhost:8080/product-service/product，
+            #此时会将请求转发到http://127.0.0.1:9002/product/1（ 值得注意的是在yml文档中 $ 要写成 $\ ）
+            - RewritePath=/eureka-client/(?<segment>.*), /$\{segment}
+            #此正则表达式详解见MyDefineGatewayGlobalFilter中
+
+      #开启从注册中心动态创建路由的功能，利用微服务名进行路由
+      discovery:
+        locator:
+          enabled: true
+      #跨域配置
+      globalcors:
+        corsConfigurations:
+          # 配置生效的路径
+          '[/**]':
+          #allowedOrigins允许请求的源路径: *或者下面的都可以，*表示全部
+          allowedOrigins:
+            #- "http://docs.spring.io"
+            - *
+          #允许请求的方式
+          allowedMethods:
+            - GET
+            - POST
+            - PUT
+            - DELETE
+
+
+
+
+###服务注册到eureka地址
+eureka:
+  client:
+    ###因为自己是为注册中心，不需要自己注册自己
+    register-with-eureka: true
+    ###因为自己是为注册中心，不需要检索服务
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://localhost:9080/eureka/
+
+feign:
+  hystrix:
+    enabled: true
+#### hystrix禁止服务超时时间
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: false
+###设置feign客户端超时时间
+ribbon:
+  ###指的是建立连接所用的时间，适用于网络状况正常的情况下，两端连接所用的时间。
+  ReadTimeout: 5000
+  ###指的是建立连接后从服务器读取到可用资源所用的时间。
+  ConnectTimeout: 5000
+
+
+
+
+#开启actuator端点
+management:
+  endpoint:
+    health:
+      show-details: always #打开端点详情
+  endpoints:
+    web:
+      exposure:
+        include: "*" #应包含的端点ID或所有的“*”
+    jmx:
+      exposure:
+        include: '*'
+    health:
+      rabbit:
+        enabled: false #禁用rabbitmq的检查

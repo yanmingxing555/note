@@ -1,0 +1,20 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="fomp-note">
+    <test name="noteTest">
+        <classes>
+            <!--<class name="NoteControllerTest">
+                <methods>
+                    <include name="testProductAdd"/>
+                </methods>
+            </class>-->
+            <class name="com.fomp.note.RedisAndRedissonTest">
+                <methods>
+                    <include name="testRedis"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <listeners>
+        <listener class-name="com.yss.fomp.common.test.listener.FompTestNGIReportListener"></listener>
+    </listeners>
+</suite>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.yss.fomp</groupId>
+        <artifactId>fomp-parent</artifactId>
+        <version>0.0.0.1-SNAPSHOT</version>
+        <relativePath/>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.fomp.note</groupId>
+    <artifactId>fomp-note</artifactId>
+    <version>1.0.0.0-SNAPSHOT</version>
+    <modules>
+        <module>fomp-note-interface</module>
+        <module>fomp-note-common</module>
+        <module>fomp-note-api</module>
+        <module>fomp-note-biz</module>
+        <module>fomp-note-start</module>
+    </modules>
+    <packaging>pom</packaging>
+    <name>随笔</name>
+    <description>随笔</description>
+
+    <properties>
+        <fomp-core-starter.version>1.0.0.0-SNAPSHOT</fomp-core-starter.version>
+        <fomp-db-all-starter.version>1.0.0.0-SNAPSHOT</fomp-db-all-starter.version>
+        <fomp-cache-j2cache-starter.version>1.0.0.0-SNAPSHOT</fomp-cache-j2cache-starter.version>
+        <fomp-sso-business-starter.version>1.0.0.0-SNAPSHOT</fomp-sso-business-starter.version>
+        <fomp-registry-eureka-starter.version>1.0.0.0-SNAPSHOT</fomp-registry-eureka-starter.version>
+    </properties>
+    <dependencyManagement>
+        <!--组件依赖请参考 http://192.168.1.2:8081/technical-platform/fomp/fomp-core/-/blob/develop/docs/%E4%BE%9D%E8%B5%96%E8%AF%B4%E6%98%8E/Fomp%E6%A1%86%E6%9E%B6%E4%BD%BF%E7%94%A8pom%E4%BE%9D%E8%B5%96%E8%AF%B4%E6%98%8E.adoc-->
+        <dependencies>
+            <dependency>
+                <groupId>com.yss.fomp</groupId>
+                <artifactId>fomp-core-starter</artifactId>
+                <version>${fomp-core-starter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yss.fomp</groupId>
+                <artifactId>fomp-db-all-starter</artifactId>
+                <version>${fomp-db-all-starter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yss.fomp</groupId>
+                <artifactId>fomp-registry-eureka-starter</artifactId>
+                <version>${fomp-registry-eureka-starter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yss.fomp</groupId>
+                <artifactId>fomp-sso-business-starter</artifactId>
+                <version>${fomp-sso-business-starter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yss.fomp</groupId>
+                <artifactId>fomp-cache-j2cache-starter</artifactId>
+                <version>${fomp-cache-j2cache-starter.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework.data</groupId>
+                        <artifactId>spring-data-redis</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>com.yss.fomp</groupId>
+                <artifactId>fomp-mq-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yss.fomp</groupId>
+                <artifactId>fomp-core-grpc-starter</artifactId>
+                <version>1.0.0.0-SNAPSHOT</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <dependencies>
+        <!-- fomp核心框架包 -->
+        <dependency>
+            <groupId>com.yss.fomp</groupId>
+            <artifactId>fomp-core-starter</artifactId>
+        </dependency>
+
+        <!-- Netty的maven依赖 Netty 现在都在用的是4.x，5.x版本已经废弃，Netty 4.x 需要JDK 6以上版本支持-->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.29.Final</version>
+        </dependency>
+        <!--Jboss Marshalling是一个java对象序列化包，对jdk默认的序列化框架进行了优化，又保持了java.io.Serializable接口的兼容书书性-->
+        <dependency>
+            <groupId>org.jboss.marshalling</groupId>
+            <artifactId>jboss-marshalling-serial</artifactId>
+            <version>2.0.0.Beta2</version>
+        </dependency>
+
+        <!--jedis操作redis-->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+        </dependency>
+        <!-- redis依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <!-- spring2.X集成redis所需common-pool2-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+
+        <!--SpringBoot整合Redisson-->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson-spring-boot-starter</artifactId>
+            <version>3.9.1</version>
+        </dependency>
+
+        <!-- fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.83</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+    </dependencies>
+
+    <!--<repositories>
+        <repository>
+            <id>amsGroup</id>
+            <url>http://222.240.48.29:8081/nexus/content/groups/ams-group/</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>amsGroup</id>
+            <url>http://222.240.48.29:8081/nexus/content/groups/ams-group/</url>
+        </pluginRepository>
+    </pluginRepositories>-->
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

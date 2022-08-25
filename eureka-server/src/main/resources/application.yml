@@ -1,0 +1,22 @@
+###服务端口号
+server:
+  port: 9080
+###服务名称
+spring:
+  application:
+    name: eureka-server
+###eureka 基本信息配置
+eureka:
+  instance:
+    ###注册到eureka的ip地址
+    hostname: localhost
+    prefer-ip-address: true
+  client:
+    ###因为自己是为注册中心，不需要自己注册自己
+    register-with-eureka: true
+    ###因为自己是为注册中心，不需要检索服务
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+
+

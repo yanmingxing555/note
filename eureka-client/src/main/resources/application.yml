@@ -1,0 +1,66 @@
+###服务端口号
+server:
+  port: 9081
+###服务名称(服务注册到eureka名称)
+spring:
+  application:
+    name: eureka-client
+###服务注册到eureka地址
+eureka:
+  client:
+    ###因为自己是为注册中心，不需要自己注册自己
+    register-with-eureka: true
+    ###因为自己是为注册中心，不需要检索服务
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://localhost:9080/eureka/
+
+
+# 开启Feign的熔断功能，默认情况下是关闭的
+feign:
+  hystrix:
+    enabled: true
+#### hystrix禁止服务超时时间
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: false
+
+#为某一个服务指定
+###设置feign客户端超时时间
+eureka-server:
+  ribbon:
+    ReadTimeout: 1000 # 读取超时时长
+    ConnectTimeout: 1000 # 建立链接的超时时长
+ribbon:
+  ###指的是建立连接所用的时间，适用于网络状况正常的情况下，两端连接所用的时间。
+  ReadTimeout: 5000
+  ###指的是建立连接后从服务器读取到可用资源所用的时间。
+  ConnectTimeout: 5000
+  # 当前服务器的重试次数
+  MaxAutoRetries: 0
+  # 重试多少次服务
+  MaxAutoRetriesNextServer: 0
+  # 是否对所有的请求方式都重试
+  OkToRetryOnAllOperations: false
+
+
+
+
+#开启actuator端点
+management:
+  endpoint:
+    health:
+      show-details: always #打开端点详情
+  endpoints:
+    web:
+      exposure:
+        include: "*" #应包含的端点ID或所有的“*”
+    jmx:
+      exposure:
+        include: '*'
+    health:
+      rabbit:
+        enabled: false #禁用rabbitmq的检查

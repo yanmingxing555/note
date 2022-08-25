@@ -1,0 +1,45 @@
+###服务端口号
+server:
+  port: 9085
+###服务注册到eureka地址
+eureka:
+  client:
+    ###因为自己是为注册中心，不需要自己注册自己
+    register-with-eureka: true
+    ###因为自己是为注册中心，不需要检索服务
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://localhost:9080/eureka/
+###服务名称(服务注册到eureka名称)
+spring:
+  application:
+    name: fomp-note
+  redis:
+    #redisson:
+      #file: classpath:redisson.yml
+    host: 10.10.10.157
+    port: 6379
+    #password: 123456
+    database: 0 #Redis数据库索引（默认为0）
+    timeout: 1800000 #连接超时时间（毫秒）
+    lettuce:
+      pool:
+        max-active: 20  #连接池最大连接数（使用负值表示没有限制）
+        max-wait: -1 #最大阻塞等待时间(负数表示没限制)
+        max-idle: 5 #连接池中的最大空闲连接
+        min-idle: 0 #连接池中的最小空闲连接
+
+#    cluster: #集群配置
+#      nodes: 10.10.10.157:6379,10.10.10.157:6389,10.10.10.157:6399
+#
+#    sentinel: #哨兵配置
+#      master: mymaster
+#      nodes: 10.10.10.157:26379,10.10.10.157:26380,10.10.10.157:26380
+
+
+
+
+
+
+
+

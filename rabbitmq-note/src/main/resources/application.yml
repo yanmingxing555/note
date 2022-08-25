@@ -1,0 +1,27 @@
+###服务端口号
+server:
+  port: 9085
+###服务名称(服务注册到eureka名称)
+spring:
+  application:
+    name: rabbitmq-note
+  #连接mq服务器
+  rabbitmq:
+    host: localhost           #mq服务器ip,默认为localhost
+    port: 5672                #mq服务器port,默认为5672
+    username: third_test      #mq服务器username,默认为gust
+    password: third_test      #mq服务器password,默认为guest
+    virtual-host: /third_test #mq服务器虚拟机地址，默认：/
+    publisher-confirms: true
+    publisher-returns: true
+###服务注册到eureka地址
+eureka:
+  client:
+    ###需要自己注册自己
+    register-with-eureka: true
+    ###需要检索服务
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://localhost:9080/eureka/
+
+
