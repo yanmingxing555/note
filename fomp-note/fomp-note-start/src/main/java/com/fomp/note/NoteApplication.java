@@ -9,6 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages = {"com.fomp.note" })
 @EnableFeignClients({"com.fomp.note.**.feign"})
 public class NoteApplication {
+    
     public static void main(String[] args) {
         SpringApplication.run(NoteApplication.class,args);
     }
