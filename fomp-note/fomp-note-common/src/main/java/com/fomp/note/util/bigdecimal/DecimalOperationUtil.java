@@ -1,4 +1,4 @@
-package com.fomp.note.util.myutil;
+package com.fomp.note.util.bigdecimal;
 
 import java.math.BigDecimal;
 
@@ -6,7 +6,7 @@ import java.math.BigDecimal;
  * 由于Java的简单类型不能够精确的对浮点数进行运算，这个工具类提供精
  * 确的浮点数运算，包括加减乘除和四舍五入。
  */
-public class NumOperationUtil {
+public class DecimalOperationUtil {
 	// 默认除法运算精度
 	private static final int DEF_DIV_SCALE = 17; // 使用double默认精度和vb相同，应该能满足要求
 	private static final String DECMSG = "小数位数不得小于0！";
@@ -14,7 +14,7 @@ public class NumOperationUtil {
 	/**
 	 * 这个类不能实例化
 	 */
-	public NumOperationUtil(){
+	public DecimalOperationUtil(){
 	}
 
 	/**
